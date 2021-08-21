@@ -1,7 +1,11 @@
+// http://docs.gl/
+
 #include <iostream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "shader_compiler.hpp"
 
 int main(void)
 {
@@ -30,10 +34,31 @@ int main(void)
     /* print openGL version */
     std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
     /* Loop until the user closes the window */
+    float positions[] {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+    };
+
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+    shader programShader("resources/shader/basic/vertex.shader", "resources/shader/basic/fragment.shader");
+    glUseProgram(programShader.getProgramID());
+
+    // programShader.printFragmentShader();
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
