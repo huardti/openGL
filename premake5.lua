@@ -18,6 +18,7 @@ workspace "openGL"
 
     group "Dependencies"
         include "libs/GLFW"
+        include "libs/GLAD"
     group ""
 
 
@@ -47,11 +48,13 @@ project "openGL"
     {
         "src",
         "libs/GLFW/include",
+        "libs/GLAD/include",
     }
 
     links
     {
         "GLFW",
+        "GLAD",
         "Xrandr",
         "Xi",
         "GLU",

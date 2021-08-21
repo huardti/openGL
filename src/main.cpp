@@ -1,3 +1,6 @@
+#include <iostream>
+
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 int main(void)
@@ -9,16 +12,23 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
 
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    int status = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+    if (!status) {
+        std::cout << "error when loading Glad !!" << std::endl;
+        return -1;
+    }
+
+    /* print openGL version */
+    std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
