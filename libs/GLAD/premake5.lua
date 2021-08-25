@@ -3,8 +3,8 @@ project "GLAD"
 	language "C"
 	staticruntime "off"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("./bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("./bin/obj/" .. outputdir .. "/%{prj.name}")
 
     includedirs
     {

@@ -32,7 +32,7 @@ project "openGL"
     staticruntime "off"
 
     targetdir ("./bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("./obj/" .. outputdir .. "/%{prj.name}")
+    objdir ("./bin/obj/" .. outputdir .. "/%{prj.name}")
 
     files
     {

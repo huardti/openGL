@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #include "renderer/error.hpp"
-#include "renderer/shader_compiler.hpp"
+#include "renderer/shader.hpp"
 
 #include "renderer/indexBuffer.hpp"
 #include "renderer/vertexBuffer.hpp"
@@ -19,10 +19,15 @@ int main(void)
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
     if (!window)
     {
+        std::cout << "problem creating window" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -62,16 +67,28 @@ int main(void)
     indexBuffer ib(indices, 6);
 
     shader programShader("resources/shader/basic/vertex.shader", "resources/shader/basic/fragment.shader");
-    glCall(glUseProgram(programShader.getProgramID()));
+
+    programShader.unbind();
+    vb.unbind();
+    ib.unbind();
 
     int uniform_color = glGetUniformLocation(programShader.getProgramID(), "u_Color");
     // programShader.printFragmentShader();
     float r = 0.0f;
     while (!glfwWindowShouldClose(window))
     {
+
         /* Render here */
         glCall(glClear(GL_COLOR_BUFFER_BIT));
+
+        programShader.bind();
         glCall(glUniform4f(uniform_color, r, 0.3f, 0.5f, 1.0f));
+
+        vb.bind();
+        glCall(glEnableVertexAttribArray(0));
+        glCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));
+
+        ib.bind();
 
         glCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 

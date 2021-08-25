@@ -17,6 +17,9 @@ public:
     void printFragmentShader();
 
     void reload();
+    void bind();
+    void unbind();
+
 
 private:
     unsigned int readFile();
